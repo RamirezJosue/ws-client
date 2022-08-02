@@ -5,8 +5,12 @@
     </div>
     <div class="col-md-4">
       <button class="btn btn-danger" (click)="clear()">Limpiar</button>
-      <button class="btn btn-success ms-2" (click)="sendMessage()">Enviar mensaje</button>
+      <button [disabled]="mensaje.invalid || loading" class="btn btn-success ms-2" (click)="sendMessage()">Enviar mensaje</button>
     </div>
+  </div>
+  <div class="row">
+    <label class="form-label">Mensaje</label>
+    <textarea class="form-control" [formControl]="mensaje" rows="3"></textarea>
   </div>
   <hr>
   <div>

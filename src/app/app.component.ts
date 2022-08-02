@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AppService } from './app.service';
 import * as XLSX from 'xlsx';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +10,13 @@ import * as XLSX from 'xlsx';
 })
 export class AppComponent {
   celulares:any [] = [];
+  
+  mensaje: FormControl = this.fb.control('',[ Validators.required]);
+  loading: boolean = false;
+
   constructor(
-    private appService: AppService
+    private appService: AppService,
+    private fb: FormBuilder
   ) {}
 
   onFileChange(event:any) {
@@ -34,14 +40,16 @@ export class AppComponent {
   }
 
   sendMessage() {
+    this.loading = true;
     this.celulares.forEach((el: any) => {
         const data = {
-          message: `Hola ${el.nombre}, prueba de mensaje massivo`,
+          // message: `Hola ${el.nombre}, prueba de mensaje massivo`,
+          message: this.mensaje.value,
           fileName: el.archivo,
           number: `51${el.celular}`
         }
         this.appService.message(data).subscribe(res => {
-          console.log('respuestaaaaa',res);
+          this.loading = false;
         });
     });
   }
